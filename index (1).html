@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Azy Fruits</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('azy.theme')==='dark'?'dark':'light'}catch(e){}</script>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--soft:#faf9f7;--hov:#fcfbfa;--ink:#1f2430;--mute:#6b7280;--line:#e8e6e1;--bd2:#d9d6cf;--dash:#cfcac0;--p:#d6336c;--p2:#fde7ee;--pd:#b02356;--btn:#d6336c;--btnh:#b02356;--mg:#f59f00;--mg2:#fff1d6;--mgt:#8a5a00;--lowt:#a15c00;--ok:#2b9348;--ok2:#e3f4e8;--r:#c92a2a;--r2:#fdeaea;--sh:rgba(31,36,48,.05);--toast:#1f2430}
+:root[data-theme=dark]{color-scheme:dark;--bg:#14161c;--card:#1d2029;--soft:#232733;--hov:#272c3a;--ink:#e9ebf0;--mute:#98a1b2;--line:#323848;--bd2:#434a5d;--dash:#4a5166;--p:#f06595;--p2:#43202e;--pd:#ff8fb3;--btn:#d6336c;--btnh:#e64980;--mg:#ffb020;--mg2:#3d3114;--mgt:#ffd479;--lowt:#ffc766;--ok:#51cf66;--ok2:#17331f;--r:#ff7b7b;--r2:#412122;--sh:rgba(0,0,0,.35);--toast:#2c3242}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink)}
+h2,h3,h4,label,th,button,.tag,.tg,.day,.brand,.kpi span,.req,select,option{text-transform:uppercase}
+header{background:var(--card);border-bottom:1px solid var(--line)}
+.bar{max-width:1160px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:0 20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:700;letter-spacing:.02em;padding:12px 0;flex:1 1 auto}
+.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#d6336c,#f59f00);display:grid;place-items:center}
+nav{order:3;flex:0 0 100%;position:relative;display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-top:1px solid var(--line)}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;white-space:nowrap;background:none;border:0;padding:14px 14px 11px;font:inherit;font-size:13.5px;letter-spacing:.03em;color:var(--mute);cursor:pointer;border-bottom:3px solid transparent;font-weight:500}
+nav button:hover{color:var(--ink)}nav button.on{color:var(--p);border-bottom-color:var(--p);font-weight:700}
+.data{order:2;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;padding:6px 0}
+#mbtn{display:none}.menu{display:contents}
+.data button{background:none;border:1px solid var(--line);border-radius:8px;color:var(--mute);cursor:pointer;font:inherit;font-size:12.5px;padding:4px 11px}
+.data button:hover{border-color:var(--p);color:var(--p)}
+#savest{font-size:12px;color:var(--ok);font-weight:600}#savest.bad{color:var(--r)}
+main{max-width:1160px;margin:0 auto;padding:26px 20px 70px}
+h2{margin:0;font-size:28px;letter-spacing:.01em}.sub{color:var(--mute);margin:3px 0 20px}
+h3{margin:0 0 12px;font-size:16px;letter-spacing:.03em}h4{margin:18px 0 8px;font-size:13px;color:var(--mute);font-weight:700;letter-spacing:.05em}
+.banner{position:relative;overflow:hidden;background:linear-gradient(120deg,#d6336c 0%,#e8590c 62%,#f59f00 100%);color:#fff;border-radius:18px;padding:26px 28px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.banner::after{content:"";position:absolute;right:-70px;top:-80px;width:270px;height:270px;border-radius:50%;border:12px solid rgba(255,255,255,.22);background:repeating-conic-gradient(rgba(255,255,255,.2) 0 12deg,transparent 12deg 30deg);pointer-events:none}
+.banner h2{font-size:32px}.banner p{margin:4px 0 0;opacity:.9}
+.banner>*{position:relative;z-index:1}.qa{display:flex;gap:10px;flex-wrap:wrap}
+.qa button{border:0;border-radius:10px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;background:#fff;color:#b02356}
+.qa button+button{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
+.qa button:hover{transform:translateY(-1px)}
+.c{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 1px 2px var(--sh),0 8px 24px var(--sh)}
+.row2{display:grid;grid-template-columns:7fr 5fr;gap:18px}
+@media(max-width:850px){.row2{grid-template-columns:1fr}}
+@media(max-width:1280px){
+.bar{padding:0 12px}
+main{padding:18px 12px 60px}
+.banner{padding:20px 18px}.banner h2{font-size:26px}
+}
+@media(max-width:820px){
+.brand{font-size:18px}
+#mbtn{display:inline-block}
+.data{position:relative}
+.menu{display:none;position:absolute;right:0;top:calc(100% + 4px);z-index:30;flex-direction:column;gap:6px;min-width:190px;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.menu.open{display:flex}
+.menu button{width:100%;text-align:left;font-size:13px;padding:10px 12px}
+input,select,textarea{font-size:16px}
+nav button{padding:13px 12px 10px}
+}
+@media(pointer:coarse){button,input,select{min-height:40px}}
+}
+@media(max-width:520px){.data button{font-size:11.5px;padding:4px 8px}.brand{font-size:17px}}
+
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:18px}
+.kpi>div{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--p);border-radius:14px;padding:15px 18px;box-shadow:0 1px 2px var(--sh),0 8px 24px var(--sh)}
+.kpi>div:nth-child(4n+2){border-top-color:var(--mg)}.kpi>div:nth-child(4n+3){border-top-color:var(--ok)}.kpi>div:nth-child(4n+4){border-top-color:#7c5cbf}
+.kpi span{color:var(--mute);font-size:12.5px;font-weight:600;letter-spacing:.04em}.kpi b{display:block;font-size:27px;letter-spacing:-.01em;line-height:1.3}.kpi small{color:var(--mute);font-size:12.5px}
+.kpi.ic>div{border-top:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center}
+.kpi.ic>div>*{grid-column:2}
+.kpi.ic>div::before{content:"";grid-row:1/4;grid-column:1;width:46px;height:46px;border-radius:13px}
+.kpi.ic>div:nth-child(1)::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d6336c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 17 9 11 13 15 21 7'/%3E%3Cpolyline points='15 7 21 7 21 13'/%3E%3C/svg%3E") center/24px no-repeat,var(--p2)}
+.kpi.ic>div:nth-child(2)::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232b9348' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.5 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6.5V8M12 16v1.5'/%3E%3C/svg%3E") center/24px no-repeat,var(--ok2)}
+.kpi.ic>div:nth-child(3)::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d98200' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h13v4'/%3E%3Cpath d='M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z'/%3E%3Ccircle cx='16' cy='14' r='1'/%3E%3C/svg%3E") center/24px no-repeat,var(--mg2)}
+.kpi.ic>div:nth-child(4)::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c92a2a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpolyline points='12 7 12 12 15 14'/%3E%3C/svg%3E") center/24px no-repeat,var(--r2)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;align-items:start}
+.wide{grid-column:1/-1}.half{grid-column:span 2}@media(max-width:600px){.half{grid-column:1/-1}}
+.fld label{display:block;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:var(--mute);margin-bottom:4px}
+.req{color:var(--r);font-weight:800;margin-left:2px}
+input,select{font:inherit;padding:9px 11px;border:1px solid var(--bd2);border-radius:10px;background:var(--card);color:var(--ink);width:100%}
+input.uc{text-transform:uppercase}
+input:focus,select:focus{outline:0;border-color:var(--p);box-shadow:0 0 0 3px var(--p2)}
+.err{display:none;color:var(--r);font-size:12.5px;font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:.02em}
+.fld.bad .err,.cartbox.bad .err{display:block}
+.fld.bad input,.fld.bad select{border-color:var(--r);background:var(--r2)}
+.cartbox.bad{border:1px solid var(--r);background:var(--r2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:0;background:var(--mg2);color:var(--mgt);border-radius:99px;padding:3px 13px;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600}
+.chip:hover{background:var(--mg);color:#fff}
+button.p{background:var(--btn);color:#fff;border:0;padding:10px 22px;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.03em;box-shadow:0 2px 6px rgba(214,51,108,.3)}
+button.p:hover{background:var(--btnh)}button.p:disabled{opacity:.6;cursor:wait}
+button.o{background:transparent;color:var(--p);border:1.5px solid var(--p);padding:8.5px 18px;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.03em}
+button.o:hover{background:var(--p2)}
+button.d2{background:#c92a2a;color:#fff;border:0;padding:10px 22px;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.03em}
+button.s{background:var(--p2);color:var(--pd);border:0;padding:4px 11px;border-radius:7px;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600}
+button.d{background:var(--r2);color:var(--r);border:0;padding:4px 11px;border-radius:7px;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600}
+.act{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;grid-column:1/-1}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td.wrap{white-space:normal;min-width:160px}
+th{font-size:12px;letter-spacing:.04em;color:var(--mute);font-weight:700;background:var(--soft)}.n{text-align:right}
+tr:hover td{background:var(--hov)}
+tr.over td{background:var(--r2)}
+td.in{background:var(--mg2)!important;font-weight:800;font-size:16px;text-align:right}
+.sc{overflow-x:auto}
+.tag{padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.03em;background:var(--ok2);color:var(--ok);white-space:nowrap}
+.tag.low{background:var(--mg2);color:var(--lowt)}.tag.out{background:var(--r2);color:var(--r)}
+.hl{font-weight:800;font-size:1.08em}.paidc{color:var(--ok);font-weight:800}.owe{color:var(--r);font-weight:800}
+.day{font-weight:700;margin:24px 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.day span{font-weight:400;font-size:13px;color:var(--mute)}
+.tg{background:var(--p2);color:var(--pd);border-radius:99px;padding:1px 11px;font-size:12px;font-weight:700}
+.grp{border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.gh{display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center;background:var(--soft);padding:10px 14px;border-bottom:1px solid var(--line)}
+.gh span{color:var(--mute);font-size:13px}.gh b{font-size:15px}.push{margin-left:auto;display:flex;gap:6px}
+.cartbox{background:var(--soft);border:1px dashed var(--dash);border-radius:12px;padding:10px 12px}
+.tot{font-size:26px;font-weight:800;letter-spacing:-.01em}
+.empty{color:var(--mute);padding:6px 0}
+.li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.li:last-child{border:0}.li small{color:var(--mute)}
+details>summary{cursor:pointer;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+details[open]>summary{margin-bottom:12px}
+.flt{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:16px}.flt .fld{min-width:170px}
+.note{background:var(--mg2);color:var(--mgt);border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-weight:600}
+.note button{margin-left:auto}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--toast);color:#fff;padding:11px 20px;border-radius:12px;display:none;z-index:50;gap:14px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.25);font-weight:600;max-width:92vw}
+#toast.on{display:flex}#toast.err{background:#c92a2a}
+#toast button{background:#fff;color:#c92a2a;border:0;border-radius:8px;padding:4px 12px;font-weight:700;cursor:pointer}
+.ov{position:fixed;inset:0;background:rgba(10,12,18,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:40}
+.ov.on{display:flex}
+.md{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:540px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.md p{margin:0 0 8px}.mf{display:flex;justify-content:flex-end;gap:10px;margin-top:16px;flex-wrap:wrap}
+.chs{display:flex;flex-direction:column;gap:8px;margin-top:12px}.chs button{text-align:left}
+.sumbox{background:var(--soft);border-radius:10px;padding:10px 12px;margin:10px 0 14px}
+.sumbox div{display:flex;justify-content:space-between;gap:12px;padding:2px 0}
+.cvg{display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:600;text-transform:none}.cvg input{width:auto}
+svg .cht{fill:var(--ink)}svg .chm{fill:var(--mute)}
+@media(max-width:1000px){div.kpi{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){
+h2{font-size:23px}.banner h2{font-size:23px}
+.banner{flex-direction:column;align-items:stretch}.qa button{flex:1}
+div.kpi{gap:10px}.kpi>div{padding:12px}.kpi b{font-size:20px}
+.kpi.ic>div{display:block}.kpi.ic>div::before{display:none}
+.c{padding:14px;border-radius:14px}
+.gh{padding:10px}.push{margin-left:0;width:100%}.push button{flex:1}
+.flt .fld{min-width:100%}.act{justify-content:stretch}.act button{flex:1}
+.mf button{flex:1}
+</style></head><body>
+<header><div class="bar"><div class="brand"><span class="logo"><svg viewBox="0 0 24 24" width="21" height="21"><circle cx="12" cy="14.5" r="7" fill="#fff"/><path d="M12 8c0-3 1.8-4.6 4.4-4.8-.1 2.7-1.6 4.5-4.4 4.8z" fill="#fff"/></svg></span>Azy Fruits</div><nav id="nav"></nav>
+<div class="data"><span id="savest"></span><button id="mbtn" onclick="toggleMenu(event)">Menu</button><div class="menu" id="menu"><button id="thm" onclick="toggleTheme()"></button><button onclick="backup()">Backup</button><button onclick="$('rfile').click()">Restore</button><button onclick="csvOrders()">Export CSV</button><button id="sout" onclick="signOut()" hidden>Sign out</button></div><input type="file" id="rfile" accept=".json,application/json" hidden></div></div></header>
+<main id="app"></main><div id="toast"></div><div class="ov" id="ov" onclick="if(event.target===this)closeModal(null)"></div>
+<script>
+/* ---------- constants and state ---------- */
+const FKEY='azy.fruitpos.v4',IDBN='azy-fruits',IDBS='state',IDBK='main';
+/* ONLINE SETUP: paste your Supabase Project URL and public (anon / publishable) key between the quotes. */
+const SB_URL='https://ngxhjfefguihjrtblncp.supabase.co',SB_KEY='sb_publishable_NfpagKRtPPIzdKMjgL2UlQ_kEMtfwV0';
+const CLOUD=!SB_URL.includes('PASTE')&&!SB_KEY.includes('PASTE');
+const METHODS=['CASH','GCASH','BANK'],FULL=['CASH','GCASH','BANK'];
+const MODES=[['CASH','CASH'],['GCASH','GCASH'],['BANK','BANK'],['CREDIT','CREDIT (UNPAID)'],['PARTIAL','PARTIAL PAYMENT']];
+const modeLabel=m=>(MODES.find(x=>x[0]==m)||[0,String(m||'')])[1];
+const BUILTIN=['MANGO','GRAPES','BANANA','APPLE','ORANGE','WATERMELON','PINEAPPLE','PAPAYA','PEAR','LEMON','LIME','KIWI','STRAWBERRY','DRAGON FRUIT','MELON','CANTALOUPE','HONEYDEW','AVOCADO','COCONUT','DURIAN','LANZONES','RAMBUTAN','MANGOSTEEN','POMELO','GUAVA','CALAMANSI','PEACH','PLUM','CHERRY','BLUEBERRY','POMEGRANATE','LYCHEE','SANTOL','JACKFRUIT','DATES','FIG','TANGERINE','MANDARIN','CHICO','ATIS','GUYABANO','PERSIMMON','APRICOT','NECTARINE','GRAPEFRUIT','PASSION FRUIT'];
+const fresh=()=>({v:4,fruits:[],sizes:[],custs:[],stockIn:[],orders:[],adj:[],pays:[],prices:{},seq:1,seqO:1,overdue:7});
+let db=fresh(),idb=null,usingLS=false,committing=false,_pm=null,rev=0,sess=null,localSeed=null;
+let view='dash',per='week',cart=[],rcart=[],curCust='',curMode='',curVia='CASH',curPaid='',touched=false,editId=null,DT0='',recEdit=null,payBusy=false;
+const F={ord:'today',rec:'today',cus:'all'},UT={status:'active',from:'',to:''};
+const $=id=>document.getElementById(id);
+/* ---------- helpers ---------- */
+const sum=(a,f)=>a.reduce((t,x)=>t+(+f(x)||0),0);
+const r2=n=>Math.round((+n||0)*100)/100;
+const peso=n=>'₱'+(+n||0).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>(+n||0).toLocaleString('en-PH',{maximumFractionDigits:2});
+const short=v=>'₱'+(v>=1000?(v/1000).toFixed(v>=10000?0:1).replace('.0','')+'k':Math.round(v));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const D=t=>new Date(t).toLocaleDateString('en-CA');
+const TM=t=>new Date(t).toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit'});
+const DT=t=>new Date(t).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'})+', '+TM(t);
+const today=()=>D(Date.now()),ago=n=>D(Date.now()-n*864e5);
+const longD=d=>new Date(d+'T12:00').toLocaleDateString('en-PH',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+const lab=d=>d==today()?'Today':d==ago(1)?'Yesterday':'';
+const tsOn=d=>d==today()?Date.now():new Date(d+'T'+new Date().toTimeString().slice(0,8)).getTime();
+const daysSince=ts=>Math.round((new Date(today()+'T12:00')-new Date(D(ts)+'T12:00'))/864e5);
+const toLocalInput=ts=>{const n=new Date(ts),p=x=>String(x).padStart(2,'0');return n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate())+'T'+p(n.getHours())+':'+p(n.getMinutes())};
+const normName=s=>String(s??'').toUpperCase().replace(/\s+/g,' ').trim();
+const blank=v=>v===undefined||v===null||v===''||isNaN(+v)?'':+v;
+const chan=m=>{const u=String(m||'').toUpperCase();return METHODS.includes(u)?u:'CASH'};
+function addTo(l,v){if(v&&!l.some(x=>x.toLowerCase()==v.toLowerCase()))l.push(v)}
+const canon=(l,v)=>l.find(x=>x.toLowerCase()==v.toLowerCase())||v;
+const lt=l=>l.boxes*l.price,ot=o=>sum(o.lines,lt),nm=x=>x.fruit+(x.size?' ('+x.size+')':'');
+const ref=o=>'ORD-'+String(o.no).padStart(4,'0');
+const ordById=id=>db.orders.find(o=>o.id===id);
+const pm=()=>_pm||(_pm=db.pays.reduce((m,p)=>((m[p.orderId]=m[p.orderId]||[]).push(p),m),{}));
+const lateList=o=>pm()[o.id]||[],lateOf=o=>sum(lateList(o),p=>p.amt);
+const paidOf=o=>r2(o.paid+lateOf(o)),balOf=o=>Math.max(0,r2(ot(o)-paidOf(o)));
+const stOf=o=>balOf(o)<=0.005?'PAID':paidOf(o)>0.005?'PARTIALLY PAID':'UNPAID';
+const stCls=s=>s=='PAID'?'':s=='PARTIALLY PAID'?'low':'out';
+const stTag=o=>{const s=stOf(o);return `<span class="tag ${stCls(s)}">${s}</span>`};
+const custs=()=>[...new Set(db.orders.map(o=>o.cust))];
+const cbal=c=>sum(db.orders.filter(o=>o.cust===c),balOf);
+const lastPay=o=>{const l=lateList(o).map(p=>p.ts);if(o.paid>0)l.push(o.ts);return l.length?Math.max(...l):null};
+const payLabel=o=>o.mode=='PARTIAL'?'PARTIAL PAYMENT ('+o.method+')':modeLabel(o.mode);
+const qtyTxt=l=>[num(l.boxes)+' BOXES',+l.kg>0?num(l.kg)+' KG':'',+l.pcs>0?num(l.pcs)+' PCS':''].filter(Boolean).join(' · ');
+const cartTotal=()=>sum(cart,lt);
+const curLate=()=>editId?lateOf(ordById(editId)||{id:-1}):0;
+/* ---------- fruit name checking ---------- */
+const allFruits=()=>[...new Set([...BUILTIN,...db.fruits,...(view=='receive'?rcart.map(l=>l.fruit):[])])];
+const K=s=>s.replace(/[^\p{L}]/gu,'');
+const validFruit=n=>(n.match(/\p{L}/gu)||[]).length>=2;
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const d=[];for(let i=0;i<=m;i++)d[i]=[i];for(let j=1;j<=n;j++)d[0][j]=j;
+ for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]==b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c);if(i>1&&j>1&&a[i-1]==b[j-2]&&a[i-2]==b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}return d[m][n]}
+function resolveFruit(raw){
+ const n=normName(raw),L=allFruits(),kn=K(n);
+ if(L.includes(n))return{ok:n};
+ const same=L.find(f=>K(f)==kn);if(same)return{ok:same};
+ const sc=L.map(f=>({f,d:lev(K(f),kn)})).sort((a,b)=>a.d-b.d||a.f.length-b.f.length);
+ const t=kn.length<=3?0:kn.length<=6?1:2,near=sc.filter(x=>x.d<=t);
+ if(near.length==1&&(near[0].d<=1||kn.length>=9))return{auto:near[0].f};
+ const pre=kn.length>=3?L.filter(f=>K(f).startsWith(kn)):[];
+ return{sug:[...new Set([...near.map(x=>x.f),...pre])].slice(0,4)}}
+function askFruit(raw,sug,allowNew){
+ const btn=(v,t,c)=>`<button class="${c}" data-v="${esc(v)}" onclick="closeModal(this.dataset.v)">${esc(t)}</button>`;
+ return modal(`<h3>Check fruit name</h3><p>You typed <b>${esc(raw)}</b>.${sug.length?' Did you mean:':' This fruit is not in your list.'}</p><div class="chs">${sug.map(s=>btn(s,s,'p')).join('')}${allowNew?btn(raw,'Add "'+raw+'" as a new fruit','o'):''}</div><div class="mf"><button class="o" onclick="closeModal(null)">Cancel</button></div>`)}
+/* returns the fruit name, null if the user cancelled, '' if unknown and not allowed */
+async function pickFruit(raw,allowNew){
+ const n=normName(raw);if(!validFruit(n))return '';
+ const r=resolveFruit(n);
+ if(r.ok)return r.ok;
+ if(r.auto){toast('Corrected '+n+' to '+r.auto);return r.auto}
+ if(!allowNew&&!r.sug.length)return '';
+ return (await askFruit(n,r.sug,allowNew))||null}
+/* ---------- data upgrade (old saved data and backups) ---------- */
+function normalize(d){
+ d=d||{};const o=Object.assign(fresh(),d);delete o.low;const U=normName;
+ let mx=0;['stockIn','orders','adj','pays'].forEach(k=>(d[k]||[]).forEach(r=>{if(+r.id>mx)mx=+r.id}));
+ o.seq=Math.max(+d.seq||1,mx+1);const nid=()=>o.seq++;
+ o.stockIn=(d.stockIn||[]).map(r=>({id:r.id||nid(),ts:+r.ts||Date.now(),fruit:U(r.fruit),size:U(r.size),boxes:Math.max(0,(+r.boxes||0)-(+r.dam||0)),kg:blank(r.kg),cost:blank(r.cost)}));
+ o.orders=(d.orders||[]).map(x=>{const src=x.lines||[{fruit:x.fruit,size:x.size,boxes:x.boxes,kg:x.kg,price:x.price}];
+  const lines=src.map(l=>({fruit:U(l.fruit),size:U(l.size),boxes:+l.boxes||0,kg:blank(l.kg),pcs:blank(l.pcs),price:+l.price||0}));
+  const rec={id:x.id||nid(),no:+x.no||0,ts:+x.ts||Date.now(),cust:U(x.cust),lines,paid:r2(x.paid),method:chan(x.method),mode:x.mode};
+  if(!MODES.some(m=>m[0]==rec.mode)){const t=ot(rec);rec.mode=rec.paid>=t-0.005&&t>0?rec.method:rec.paid>0?'PARTIAL':'CREDIT'}
+  return rec});
+ let mn=0;o.orders.forEach(x=>{if(x.no>mn)mn=x.no});
+ o.orders.filter(x=>!x.no).sort((a,b)=>a.ts-b.ts||a.id-b.id).forEach(x=>x.no=++mn);
+ o.seqO=Math.max(+d.seqO||1,mn+1);
+ const ids=new Set(o.orders.map(x=>x.id));o.pays=[];const legacy=[];
+ (d.pays||[]).forEach(p=>{if(p.orderId){if(ids.has(p.orderId))o.pays.push({id:p.id||nid(),ts:+p.ts||Date.now(),orderId:p.orderId,cust:U(p.cust),amt:r2(p.amt),method:chan(p.method)})}else legacy.push(p)});
+ legacy.sort((a,b)=>a.ts-b.ts).forEach(p=>{let left=+p.amt||0;const c=U(p.cust),os=o.orders.filter(x=>x.cust==c).sort((a,b)=>a.ts-b.ts);
+  for(const x of os){if(left<=0.004)break;const owed=ot(x)-x.paid-sum(o.pays.filter(q=>q.orderId==x.id),q=>q.amt);if(owed<=0.004)continue;const a=Math.min(owed,left);o.pays.push({id:nid(),ts:+p.ts||Date.now(),orderId:x.id,cust:c,amt:r2(a),method:chan(p.method)});left-=a}
+  if(left>0.004&&os.length)o.pays.push({id:nid(),ts:+p.ts||Date.now(),orderId:os[os.length-1].id,cust:c,amt:r2(left),method:chan(p.method)})});
+ o.adj=(d.adj||[]).map(a=>({id:a.id||nid(),ts:+a.ts||Date.now(),fruit:U(a.fruit),size:U(a.size),boxes:+a.boxes||0}));
+ const uniq=a=>[...new Set(a.filter(Boolean))];
+ o.fruits=uniq([...(d.fruits||[]).map(U),...o.stockIn.map(r=>r.fruit),...o.orders.flatMap(x=>x.lines.map(l=>l.fruit)),...o.adj.map(a=>a.fruit)]);
+ o.sizes=uniq([...(d.sizes||[]).map(U),...o.stockIn.map(r=>r.size),...o.orders.flatMap(x=>x.lines.map(l=>l.size)),...o.adj.map(a=>a.size)]);
+ o.custs=uniq([...(d.custs||[]).map(U),...o.orders.map(x=>x.cust)]);
+ o.prices={};Object.entries(d.prices||{}).forEach(([k,v])=>{const [f,s]=k.split('|');o.prices[U(f)+'|'+U(s||'')]=+v});
+ o.overdue=Math.max(1,Math.round(+d.overdue||7));o.v=4;return o}
+/* ---------- database (IndexedDB) ---------- */
+function openIDB(){return new Promise((res,rej)=>{if(!window.indexedDB)return rej(new Error('No IndexedDB'));const r=indexedDB.open(IDBN,1);r.onupgradeneeded=()=>r.result.createObjectStore(IDBS);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);r.onblocked=()=>rej(new Error('Blocked'))})}
+function idbGet(){return new Promise((res,rej)=>{const q=idb.transaction(IDBS,'readonly').objectStore(IDBS).get(IDBK);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})}
+function idbPut(v){return new Promise((res,rej)=>{const tx=idb.transaction(IDBS,'readwrite');tx.objectStore(IDBS).put(v,IDBK);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error||new Error('Write cancelled'))})}
+async function persist(){if(CLOUD){await cloudSave();return}if(idb){await idbPut(db);return}localStorage.setItem(FKEY,JSON.stringify(db))}
+function setSaved(ok){const s=$('savest');s.className=ok?'':'bad';s.textContent=ok?'Saved '+TM(Date.now()):'Not saved'}
+/* every change goes through commit: change, save, and only then report success */
+async function commit(fn,okMsg,retry){
+ if(committing){toast('Please wait, saving.');return false}
+ committing=true;const snap=JSON.stringify(db);
+ try{fn();_pm=null;await persist();setSaved(true);if(okMsg)toast(okMsg);return true}
+ catch(e){const cf=e&&e.conflict;if(!cf)db=JSON.parse(snap);_pm=null;setSaved(false);toast('Not saved. '+((e&&e.message)||'Storage error')+(cf?'':'.'),cf?undefined:(retry||(()=>{})));if(CLOUD&&!sess)showLogin('Session expired. Sign in again.');else if(cf)render();return false}
+ finally{committing=false}}
+async function init(){
+ try{idb=await openIDB()}catch(e){idb=null;usingLS=true}
+ let raw=null,migrated=false;
+ try{raw=idb?await idbGet():JSON.parse(localStorage.getItem(FKEY))}catch(e){raw=null}
+ if(!(raw&&raw.orders)){raw=null;for(const k of ['fruitpos.v3','fruitpos.v2']){try{const l=JSON.parse(localStorage.getItem(k));if(l&&l.orders){raw=l;migrated=true;break}}catch(e){}}}
+ if(CLOUD){localSeed=raw;sess=loadSess();if(sess)await enterApp();else showLogin();return}
+ db=normalize(raw);
+ if(migrated||!raw){try{await persist();setSaved(true)}catch(e){setSaved(false);toast('Could not save to the database.',()=>commit(()=>{}))}}
+ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}}
+/* ---------- online (Supabase) ---------- */
+function loadSess(){try{return JSON.parse(localStorage.getItem('azy.sess'))}catch(e){return null}}
+function saveSess(x){try{x?localStorage.setItem('azy.sess',JSON.stringify(x)):localStorage.removeItem('azy.sess')}catch(e){}}
+async function authCall(grant,body){
+ const r=await fetch(SB_URL+'/auth/v1/token?grant_type='+grant,{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error(j.error_description||j.msg||j.message||'Login failed');
+ return{access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000,email:(j.user&&j.user.email)||(sess&&sess.email)||''}}
+async function token(){
+ if(!sess)throw new Error('Not signed in');
+ if(Date.now()>sess.exp-60000){
+  try{sess=await authCall('refresh_token',{refresh_token:sess.refresh});saveSess(sess)}
+  catch(e){if(e instanceof TypeError)throw new Error('No internet connection');sess=null;saveSess(null);throw new Error('Session expired. Sign in again.')}}
+ return sess.access}
+async function sbFetch(path,opt){
+ const t=await token();let r;
+ try{r=await fetch(SB_URL+'/rest/v1/'+path,{...opt,headers:{apikey:SB_KEY,Authorization:'Bearer '+t,'Content-Type':'application/json',...((opt&&opt.headers)||{})}})}
+ catch(e){throw new Error('No internet connection')}
+ if(r.status==401){sess=null;saveSess(null);throw new Error('Session expired. Sign in again.')}
+ if(!r.ok){let m='';try{m=(await r.json()).message}catch(x){}throw new Error(m||'Server error '+r.status)}
+ return r.json()}
+async function cloudLoad(){
+ const a=await sbFetch('pos_state?id=eq.1&select=data,rev');
+ if(!a.length)throw new Error('The cloud table is not set up yet. Run the setup SQL in Supabase.');
+ rev=a[0].rev;return a[0].data}
+async function cloudSave(){
+ const a=await sbFetch('pos_state?id=eq.1&rev=eq.'+rev,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({data:db,rev:rev+1,updated_at:new Date().toISOString()})});
+ if(!a.length){
+  const d=await cloudLoad();db=normalize(d);_pm=null;
+  const e=new Error('Changed on another device. Latest data loaded. Please redo your change.');e.conflict=true;throw e}
+ rev=a[0].rev}
+function showLogin(msg){
+ $('sout').hidden=true;$('nav').innerHTML='';$('savest').textContent='';
+ $('app').innerHTML=`<div class="c" style="max-width:420px;margin:40px auto" data-enter="doLogin"><h3>Sign in</h3><p class="sub">Use the email and password for your shop account.</p><div class="form" style="grid-template-columns:1fr"><div class="fld"><label>Email</label><input id="le" type="email" autocomplete="username"><div class="err"></div></div><div class="fld"><label>Password</label><input id="lp" type="password" autocomplete="current-password"><div class="err"></div></div><div class="act"><button class="p" id="lbtn" onclick="doLogin()">Sign in</button></div></div></div>`;
+ if(msg)bad('lp',msg)}
+async function doLogin(){
+ clearErrs();const e=$('le').value.trim(),p=$('lp').value;let f=false;
+ if(!e){bad('le','Enter your email.');f=true}
+ if(!p){bad('lp','Enter your password.');f=true}
+ if(f)return;
+ $('lbtn').disabled=true;
+ try{sess=await authCall('password',{email:e,password:p});saveSess(sess)}
+ catch(x){$('lbtn').disabled=false;bad('lp',x instanceof TypeError?'No internet connection':x.message);return}
+ await enterApp()}
+function showRetry(msg){
+ $('app').innerHTML=`<div class="c" style="max-width:480px;margin:40px auto"><h3>Could not load your data</h3><p>${esc(msg)}</p><div class="mf"><button class="o" onclick="signOut()">Sign out</button><button class="p" onclick="enterApp()">Try again</button></div></div>`}
+async function enterApp(){
+ $('app').innerHTML='<div class="empty">Loading…</div>';
+ let d;
+ try{d=await cloudLoad()}catch(e){if(!sess){showLogin(e.message);return}showRetry(e.message);return}
+ if(!(d&&Array.isArray(d.orders))){
+  const has=localSeed&&Array.isArray(localSeed.orders)&&(localSeed.orders.length||(localSeed.stockIn||[]).length);
+  if(has&&await ask('Upload your data?','This device has saved data ('+counts(normalize(localSeed))+'). Upload it to the cloud so your phone can use it too?','Upload')){db=normalize(localSeed)}else db=fresh();
+  try{await cloudSave();}catch(e){showRetry(e.message);return}}
+ else db=normalize(d);
+ _pm=null;$('sout').hidden=false;setSaved(true);render()}
+function signOut(){sess=null;saveSess(null);db=fresh();rev=0;cart=[];rcart=[];resetOrderForm();showLogin()}
+async function syncCheck(){
+ if(!CLOUD||!sess||committing||mres||cart.length||rcart.length||recEdit||editId||payBusy)return;
+ const a=document.activeElement;if(a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName))return;
+ if((view=='orders'||view=='receive')&&[...document.querySelectorAll('#app input:not([type=date]):not([type=hidden])')].some(i=>i.value))return;
+ try{const r=await sbFetch('pos_state?id=eq.1&select=rev');
+  if(r.length&&r[0].rev!==rev){const d=await cloudLoad();if(committing||mres)return;db=normalize(d);_pm=null;render();setSaved(true)}}catch(e){}}
+setInterval(syncCheck,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncCheck()});
+/* ---------- ui helpers ---------- */
+function toast(m,retry){const t=$('toast');t.innerHTML='<span>'+esc(String(m).toUpperCase())+'</span>'+(retry?'<button id="tr">Retry</button>':'');t.className=retry?'on err':'on';
+ if(retry)$('tr').onclick=()=>{t.className='';retry()};clearTimeout(t._t);t._t=setTimeout(()=>t.className='',retry?10000:3500)}
+let mres=null;
+function modal(html){return new Promise(res=>{mres=res;const ov=$('ov');ov.innerHTML='<div class="md" role="dialog" aria-modal="true">'+html+'</div>';ov.classList.add('on');const f=ov.querySelector('[data-af]')||ov.querySelector('input,select,button');if(f)f.focus()})}
+function closeModal(v){const r=mres;mres=null;$('ov').classList.remove('on');$('ov').innerHTML='';if(r)r(v)}
+const ask=(title,msg,okLabel,danger)=>modal(`<h3>${title}</h3><p>${msg}</p><div class="mf"><button class="o" onclick="closeModal(false)">Cancel</button><button class="${danger?'d2':'p'}" data-af onclick="closeModal(true)">${okLabel}</button></div>`).then(v=>v===true);
+function bad(id,msg){const el=$(id);if(!el)return;const f=el.closest('.fld');f.classList.add('bad');let e=f.querySelector('.err');if(!e){e=document.createElement('div');e.className='err';f.appendChild(e)}e.textContent=msg}
+function clearErrs(){document.querySelectorAll('.fld.bad,.cartbox.bad').forEach(f=>f.classList.remove('bad'))}
+function focusFirst(){const el=document.querySelector('.fld.bad input,.fld.bad select');if(el){el.focus();el.scrollIntoView({block:'center',behavior:'smooth'})}}
+const chips=(id,l)=>l.length?`<div class="chips">${l.map(v=>`<button type="button" class="chip" data-v="${esc(v)}" onclick="setv('${id}',this.dataset.v)">${esc(v)}</button>`).join('')}</div>`:'';
+const dlist=(id,l)=>`<datalist id="${id}">${l.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>`;
+function setv(id,v){const el=$(id);el.value=v;const f=el.closest('.fld');if(f)f.classList.remove('bad');if(id=='oc')curCust=v;if(id=='of'||id=='os')fillPrice()}
+function byDay(rows,fn,note){const g={};rows.forEach(r=>(g[D(r.ts)]=g[D(r.ts)]||[]).push(r));
+ return Object.keys(g).sort().reverse().map(d=>`<div class="day">${lab(d)?`<b class="tg">${lab(d)}</b>`:''}${longD(d)}<span>${note(g[d])}</span></div>${fn(g[d])}`).join('')}
+const fd=k=>F[k]=='today'?today():F[k],inF=(k,ts)=>F[k]=='all'||D(ts)==fd(k);
+const filt=k=>`<div class="flt"><div class="fld"><label>Date</label><input type="date" value="${F[k]=='all'?'':fd(k)}" max="${today()}" onchange="setF('${k}',this.value)"></div><button class="${F[k]=='today'?'p':'o'}" onclick="setF('${k}','today')">Today</button><button class="${F[k]=='all'?'p':'o'}" onclick="setF('${k}','all')">All dates</button></div>`;
+function setF(k,v){F[k]=v||'today';render()}
+function applyTheme(t){document.documentElement.dataset.theme=t;$('thm').textContent=t=='dark'?'Light mode':'Dark mode';$('thm').setAttribute('aria-pressed',t=='dark')}
+function toggleMenu(e){e.stopPropagation();$('menu').classList.toggle('open')}
+document.addEventListener('click',()=>$('menu').classList.remove('open'));
+function toggleTheme(){const t=document.documentElement.dataset.theme=='dark'?'light':'dark';try{localStorage.setItem('azy.theme',t)}catch(e){}applyTheme(t)}
+document.addEventListener('input',e=>{const t=e.target;if(!t||!t.classList)return;
+ if(t.classList.contains('uc')){const s=t.selectionStart,u=t.value.toUpperCase();if(u!==t.value){t.value=u;try{t.setSelectionRange(s,s)}catch(x){}}}
+ const f=t.closest('.fld');if(f)f.classList.remove('bad');
+ if(t.id=='oc')curCust=t.value;else if(t.id=='of'||t.id=='os')fillPrice();else if(t.id=='oa'){touched=true;curPaid=t.value;updBal()}});
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&mres){closeModal(null);return}
+ if(e.key!='Enter'||!e.target||e.target.tagName!='INPUT')return;const h=e.target.closest('[data-enter]');if(h){e.preventDefault();window[h.dataset.enter]()}});
+/* ---------- inventory and money ---------- */
+function itemsOf(d){const m={};const g=(f,s)=>m[f+'|'+s]=m[f+'|'+s]||{fruit:f,size:s,rec:0,sold:0,rem:0,rk:0,sk:0,cs:0,cb:0};
+ d.stockIn.forEach(r=>{const x=g(r.fruit,r.size);x.rec+=r.boxes;x.rk+=+r.kg||0;if(r.cost!==''&&r.cost!=null){x.cs+=r.cost*r.boxes;x.cb+=r.boxes}});
+ d.orders.forEach(o=>o.lines.forEach(l=>{const x=g(l.fruit,l.size);x.sold+=l.boxes;x.sk+=+l.kg||0}));
+ d.adj.forEach(a=>{g(a.fruit,a.size).rem+=a.boxes});
+ return Object.values(m).map(x=>({...x,left:x.rec-x.sold+x.rem})).sort((a,b)=>nm(a).localeCompare(nm(b)))}
+const avg=x=>x.cb?x.cs/x.cb:null;
+function profit(os){const m={};itemsOf(db).forEach(x=>m[x.fruit+'|'+x.size]=avg(x));return sum(os.flatMap(o=>o.lines),l=>{const c=m[l.fruit+'|'+l.size];return c==null?0:(l.price-c)*l.boxes})}
+function coll(f){const r={CASH:0,GCASH:0,BANK:0};db.orders.filter(o=>f(o.ts)).forEach(o=>r[o.method]+=o.paid);db.pays.filter(p=>f(p.ts)).forEach(p=>r[p.method]+=p.amt);return r}
+function payRows(cust){const r=[];db.orders.forEach(o=>{if(cust&&o.cust!==cust)return;if(o.paid>0)r.push({ts:o.ts,o,amt:o.paid,method:o.method,kind:'At time of order'});lateList(o).forEach(p=>r.push({ts:p.ts,o,amt:p.amt,method:p.method,kind:'Later payment'}))});return r.sort((a,b)=>b.ts-a.ts)}
+const trialDb=fn=>{const t=JSON.parse(JSON.stringify(db));fn(t);return t};
+/* ---------- pages ---------- */
+const views={dash:'Dashboard',orders:'Orders',receive:'Receive stock',cust:'Customers & unpaid',rep:'Reports'};
+function go(v){view=v;render();window.scrollTo(0,0)}
+function render(){_pm=null;$('nav').innerHTML=Object.entries(views).map(([k,t])=>`<button class="${k==view?'on':''}" onclick="go('${k}')">${t}</button>`).join('');
+ {const nv=$('nav'),on=nv.querySelector('.on');if(on)nv.scrollLeft=on.offsetLeft-(nv.clientWidth-on.offsetWidth)/2}
+ $('app').innerHTML=({dash:dashView,orders:ordersView,receive:receiveView,cust:customersView,rep:reportsView})[view]()}
+const head=(t,s)=>`<h2>${t}</h2><p class="sub">${s}</p>`;
+function vbars(d){const W=560,H=215,pad=26,mx=Math.max(...d.map(x=>x.v),1),bw=W/d.length;
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Sales for the last 7 days">`+d.map((x,i)=>{const h=Math.round((H-pad-30)*x.v/mx),w=bw*.62,xx=i*bw+bw*.19,y=H-pad-h;
+ return `<rect x="${xx}" y="${y}" width="${w}" height="${x.v?Math.max(h,3):0}" rx="6" fill="${x.hi?'#f59f00':'#d6336c'}"/><text class="cht" x="${xx+w/2}" y="${y-6}" text-anchor="middle" font-size="12">${x.v?short(x.v):''}</text><text class="chm" x="${xx+w/2}" y="${H-7}" text-anchor="middle" font-size="12">${x.l}</text>`}).join('')+`<line x1="0" x2="${W}" y1="${H-pad}" y2="${H-pad}" stroke="currentColor" opacity=".2"/></svg>`}
+function dashView(){
+ const t=today(),to=db.orders.filter(o=>D(o.ts)==t),st=sum(to,ot),sy=sum(db.orders.filter(o=>D(o.ts)==ago(1)),ot);
+ const diff=sy?Math.round((st-sy)/sy*100):null,its=itemsOf(db),cl=coll(ts=>D(ts)==t);
+ const owing=custs().map(c=>[c,cbal(c)]).filter(x=>x[1]>0.005).sort((a,b)=>b[1]-a[1]);
+ const days=[...Array(7)].map((_,i)=>{const d=ago(6-i);return{v:sum(db.orders.filter(o=>D(o.ts)==d),ot),l:i==6?'Today':new Date(d+'T12:00').toLocaleDateString('en-PH',{weekday:'short'}),hi:i==6}});
+ const last=db.orders.slice().sort((a,b)=>b.ts-a.ts||b.id-a.id).slice(0,6);
+ let lb='';try{lb=localStorage.getItem('azy.lastbackup')||''}catch(e){}
+ const needBk=(db.orders.length||db.stockIn.length)&&lb!=t;
+ return (usingLS?`<div class="note">This browser blocked the database, so basic storage is being used. Download a backup often.</div>`:'')+(needBk?`<div class="note">No backup file downloaded today. Keep a copy outside the browser.<button class="o" onclick="backup()">Backup now</button></div>`:'')+
+ `<div class="banner"><div><h2>Dashboard</h2><p>${longD(t)}</p></div><div class="qa"><button onclick="go('orders')">New order</button><button onclick="go('receive')">Receive stock</button></div></div><div class="kpi ic">
+ <div><span>Sales today</span><b class="hl">${peso(st)}</b><small>${to.length} order${to.length==1?'':'s'}. ${diff===null?'No sales yesterday.':(diff>=0?'Up ':'Down ')+Math.abs(diff)+'% from yesterday.'}</small></div>
+ <div><span>Profit today</span><b>${peso(profit(to))}</b><small>Counts fruits that have a cost price.</small></div>
+ <div><span>Collected today</span><b class="paidc">${peso(sum(METHODS,m=>cl[m]))}</b><small>Cash ${short(cl.CASH)}, GCash ${short(cl.GCASH)}, Bank ${short(cl.BANK)}</small></div>
+ <div><span>Unpaid by customers</span><b class="${owing.length?'owe':''}">${peso(sum(owing,x=>x[1]))}</b><small>${owing.length} customer${owing.length==1?'':'s'} owe you.</small></div></div>
+ <div class="row2"><div class="c"><h3>Sales, last 7 days</h3>${vbars(days)}</div>
+ <div class="c"><h3>In stock now</h3>${its.length?`<table>${its.slice().sort((a,b)=>b.left-a.left).slice(0,8).map(x=>`<tr><td>${esc(nm(x))}</td><td class="n"><b>${num(x.left)}</b> boxes</td></tr>`).join('')}</table>`:'<div class="empty">Save a delivery under Receive stock.</div>'}</div></div>
+ <div class="row2"><div class="c"><h3>Latest orders</h3>${last.length?last.map(o=>`<div class="li"><span><b>${esc(o.cust)}</b> <small>${ref(o)}</small>: ${o.lines.map(l=>num(l.boxes)+' '+esc(nm(l))).join(', ')}<br><small>${DT(o.ts)}</small> ${stTag(o)}</span><b class="hl">${peso(ot(o))}</b></div>`).join(''):'<div class="empty">No orders yet. Add one under Orders.</div>'}</div>
+ <div class="c"><h3>Customers who owe</h3>${owing.slice(0,6).map(([c,b])=>`<div class="li"><span>${esc(c)}</span><span class="owe">${peso(b)}</span></div>`).join('')||'<div class="empty">Nobody owes you.</div>'}${owing.length?`<p style="margin:12px 0 0"><button class="o" onclick="showUnpaid()">Open unpaid customers</button></p>`:''}</div></div>`}
+/* ----- orders ----- */
+function cartHTML(){return (cart.length?`<div class="sc"><table><tr><th>Fruit</th><th>Size</th><th class="n">Boxes</th><th class="n">Kg</th><th class="n">Pcs</th><th class="n">Price</th><th class="n">Amount</th><th></th></tr>${cart.map((l,i)=>`<tr><td>${esc(l.fruit)}</td><td>${esc(l.size)||'-'}</td><td class="n">${num(l.boxes)}</td><td class="n">${l.kg===''?'-':num(l.kg)}</td><td class="n">${l.pcs===''?'-':num(l.pcs)}</td><td class="n">${peso(l.price)}</td><td class="n hl">${peso(lt(l))}</td><td><button class="d" onclick="rmLine(${i})">Remove</button></td></tr>`).join('')}</table></div>`:'<div class="empty">No fruits added yet.</div>')+'<div class="err">Add at least one fruit to the order.</div>';}
+function orderCard(o){const bl=balOf(o);
+ return `<div class="grp"><div class="gh"><b>${ref(o)}</b><b>${esc(o.cust)}</b><span>${TM(o.ts)}</span><span>Total <b class="hl">${peso(ot(o))}</b></span><span>Paid <b class="paidc">${peso(paidOf(o))}</b></span><span>Balance <b class="${bl>0.005?'owe':''}">${peso(bl)}</b></span><span>${payLabel(o)}</span>${stTag(o)}<span class="push"><button class="s" onclick="editOrder(${o.id})">Edit</button><button class="d" onclick="delOrder(${o.id})">Delete</button></span></div>
+ <div class="sc"><table><tr><th>Fruit</th><th>Size</th><th class="n">Boxes</th><th class="n">Kg</th><th class="n">Pcs</th><th class="n">Price</th><th class="n">Amount</th></tr>${o.lines.map(l=>`<tr><td>${esc(l.fruit)}</td><td>${esc(l.size)||'-'}</td><td class="n">${num(l.boxes)}</td><td class="n">${l.kg===''?'-':num(l.kg)}</td><td class="n">${l.pcs===''?'-':num(l.pcs)}</td><td class="n">${peso(l.price)}</td><td class="n">${peso(lt(l))}</td></tr>`).join('')}</table></div></div>`}
+function ordersView(){
+ const eo=editId?ordById(editId):null,rows=db.orders.filter(o=>inF('ord',o.ts)).sort((a,b)=>b.ts-a.ts||b.id-a.id);
+ return head('Orders','Add every fruit the customer wants, then save once. Fields marked * are required.')+`
+ <div class="c" id="oform"><h3>${eo?'Edit order '+ref(eo):'New order'}</h3>
+ ${eo?`<div class="note">You are editing ${ref(eo)}. Original date: ${DT(eo.ts)}.<button class="o" onclick="cancelEdit()">Cancel edit</button></div>`:''}
+ <div class="form"><div class="fld ${eo?'half':'wide'}"><label>Customer name <span class="req">*</span></label><input class="uc" id="oc" list="dl-c" value="${esc(curCust)}" autocomplete="off" placeholder="Who is ordering?"><div class="err">Enter the customer name.</div>${chips('oc',db.custs.slice().reverse().slice(0,12))}</div>
+ ${eo?`<div class="fld half"><label>Order date and time</label><input id="odt" type="datetime-local" value="${toLocalInput(eo.ts)}"><div class="err"></div></div>`:''}</div>
+ <h4>Add a fruit</h4><div class="form" data-enter="addLine">
+ <div class="half fld"><label>Fruit <span class="req">*</span></label><input class="uc" id="of" list="dl-f" autocomplete="off" placeholder="Apple"><div class="err"></div>${chips('of',db.fruits.slice().sort())}</div>
+ <div class="half fld"><label>Size</label><input class="uc" id="os" list="dl-s" autocomplete="off" placeholder="Large"><div class="err"></div>${chips('os',db.sizes.slice().sort())}</div>
+ <div class="fld"><label>Boxes <span class="req">*</span></label><input id="ob" type="number" min="0" step="any" inputmode="decimal"><div class="err"></div></div>
+ <div class="fld"><label>Price <span class="req">*</span></label><input id="op" type="number" min="0" step="any" inputmode="decimal" placeholder="Per box"><div class="err"></div></div>
+ <div class="fld"><label>Kg</label><input id="ok" type="number" min="0" step="any" inputmode="decimal"><div class="err"></div></div>
+ <div class="fld"><label>Pieces</label><input id="opc" type="number" min="0" step="1" inputmode="numeric"><div class="err"></div></div>
+ <div class="act"><button class="p" onclick="addLine()">Add</button></div></div>
+ <h4>This order</h4><div class="cartbox" id="cartbox">${cartHTML()}</div>
+ <div class="form" style="margin-top:14px">
+ <div class="fld"><label>Order total</label><div class="tot hl" id="otot">${peso(cartTotal())}</div></div>
+ <div class="fld"><label>Paid with <span class="req">*</span></label><select id="opay" onchange="onMode(this.value)"><option value="" disabled${curMode?'':' selected'}>— Select —</option>${MODES.map(([v,t])=>`<option value="${v}"${v==curMode?' selected':''}>${t}</option>`).join('')}</select><div class="err"></div></div>
+ <div class="fld" id="via" style="${curMode=='PARTIAL'?'':'display:none'}"><label>Partial paid via</label><select id="ovia" onchange="curVia=this.value">${METHODS.map(m=>`<option${m==curVia?' selected':''}>${m}</option>`).join('')}</select></div>
+ <div class="fld"><label>Amount paid <span class="req">*</span></label><input id="oa" type="number" min="0" step="any" inputmode="decimal" placeholder="0 if none" value="${esc(curPaid)}"><div class="err"></div></div>
+ <div class="fld"><label>Remaining balance</label><div class="tot" id="obal"></div></div>
+ ${eo&&lateOf(eo)>0?`<div class="fld wide"><small style="color:var(--mute)">This order also has ${peso(lateOf(eo))} in later payments. They are kept and counted in the balance.</small></div>`:''}
+ <div class="act">${eo?'<button class="o" onclick="cancelEdit()">Cancel edit</button>':''}<button class="p" onclick="saveOrder()">${eo?'Save changes':'Save order'}</button></div></div>
+ ${dlist('dl-c',db.custs)}${dlist('dl-f',allFruits().sort())}${dlist('dl-s',db.sizes)}</div>
+ <div class="c"><h3>Order history</h3><p class="sub" style="margin-top:-6px">Newest first. Earlier days are kept; use the date filter to open them.</p>${filt('ord')}${rows.length?byDay(rows,rs=>rs.map(orderCard).join(''),rs=>`${rs.length} order${rs.length==1?'':'s'}, ${peso(sum(rs,ot))}`):`<div class="empty">No orders ${F.ord=='all'?'yet':'for '+longD(fd('ord'))}.</div>`}</div>`}
+function updBal(){const el=$('obal');if(!el)return;const r=r2(cartTotal()-curLate()-(+$('oa').value||0));el.textContent=r<-0.005?'OVERPAID':peso(Math.max(r,0));el.className='tot '+(r>0.005?'owe':r<-0.005?'owe':'paidc')}
+function syncPaid(){}
+function refreshCart(){const b=$('cartbox');b.innerHTML=cartHTML();b.classList.remove('bad');$('otot').textContent=peso(cartTotal());syncPaid();$('oa').value=curPaid;updBal()}
+function onMode(v){curMode=v;touched=false;syncPaid();$('oa').value=curPaid;$('via').style.display=v=='PARTIAL'?'':'none';$('oa').closest('.fld').classList.remove('bad');updBal()}
+function fillPrice(){const k=normName($('of').value)+'|'+normName($('os').value);if(db.prices[k]!==undefined)$('op').value=db.prices[k]}
+function availOf(fruit,size){const d=editId?{...db,orders:db.orders.filter(o=>o.id!==editId)}:db;const it=itemsOf(d).find(x=>x.fruit==fruit&&x.size==size);return it?it.left:0}
+async function addLine(){
+ clearErrs();let first=null;const E=(id,m)=>{bad(id,m);first=first||id};
+ const rawF=$('of').value,b=$('ob').value,p=$('op').value,k=$('ok').value,pc=$('opc').value;
+ if(!normName(rawF))E('of','Enter the fruit name.');else if(!validFruit(normName(rawF)))E('of','Enter a valid fruit name.');
+ if(b===''||!(+b>0))E('ob','Enter boxes above 0.');
+ if(p===''||!(+p>0))E('op','Enter a price above 0.');
+ if(k!==''&&!(+k>=0))E('ok','Kg cannot be negative.');
+ if(pc!==''&&(!(+pc>=0)||!Number.isInteger(+pc)))E('opc','Use a whole number.');
+ if(first){focusFirst();return}
+ const fruit=await pickFruit(rawF,false);
+ if(fruit===null){$('of').focus();return}
+ if(fruit===''){bad('of','Unknown fruit. Record its delivery first.');focusFirst();return}
+ const size=canon(db.sizes,normName($('os').value)),inCart=sum(cart.filter(l=>l.fruit==fruit&&l.size==size),l=>l.boxes),left=availOf(fruit,size);
+ if(+b+inCart>left+1e-9){bad('ob','Only '+num(Math.max(left-inCart,0))+' boxes available.');focusFirst();return}
+ cart.push({fruit,size,boxes:+b,kg:k===''?'':+k,pcs:pc===''?'':+pc,price:+p});
+ ['of','os','ob','op','ok','opc'].forEach(id=>$(id).value='');refreshCart();$('of').focus()}
+function rmLine(i){cart.splice(i,1);refreshCart()}
+async function saveOrder(){
+ if(committing)return;clearErrs();let first=null;const E=(id,m)=>{bad(id,m);first=first||id};
+ const custRaw=normName($('oc').value),mode=$('opay').value,amtRaw=$('oa').value,amt=r2(amtRaw),tot=cartTotal(),room=r2(tot-curLate());
+ if(!custRaw)E('oc','Enter the customer name.');
+ if($('of').value.trim()||$('ob').value!==''||$('op').value!=='')E('of','Click Add to include this fruit, or clear it.');
+ if(!cart.length)$('cartbox').classList.add('bad');
+ if(editId&&!$('odt').value)E('odt','Enter the order date.');
+ if(cart.length){
+  if(!mode)E('opay','Select how the customer paid.');
+  if(amtRaw===''||isNaN(+amtRaw))E('oa','Enter the amount paid (0 if none).');
+  else if(+amtRaw<0)E('oa','Payment cannot be negative.');
+  else if(!mode){}
+  else if(amt>room+0.005)E('oa','Payment cannot be more than the order total.');
+  else if(mode!='CREDIT'&&amt<=0)E('oa','Enter an amount above 0.');
+  else if(mode=='PARTIAL'&&amt>=room-0.005)E('oa','Partial payment must be less than the total.');
+  else if(mode=='CREDIT'&&room>0&&amt>=room-0.005)E('oa','Credit means not fully paid. Use CASH if fully paid.')}
+ if(first||!cart.length){first?focusFirst():$('cartbox').scrollIntoView({block:'center',behavior:'smooth'});return}
+ const eo=editId?ordById(editId):null;
+ let ts=eo?eo.ts:Date.now();if(eo&&$('odt').value!==DT0)ts=new Date($('odt').value).getTime();
+ const method=mode=='PARTIAL'?$('ovia').value:FULL.includes(mode)?mode:'CASH',lines=cart.map(l=>({...l}));
+ const trial=trialDb(t=>{const rec={id:eo?eo.id:-1,no:0,ts,cust:custRaw,lines,paid:amt,method,mode};if(eo)t.orders=t.orders.map(o=>o.id===eo.id?rec:o);else t.orders.push(rec)});
+ const neg=itemsOf(trial).find(x=>x.left<-1e-9&&lines.some(l=>l.fruit==x.fruit&&l.size==x.size));
+ if(neg){$('cartbox').classList.add('bad');$('cartbox').querySelector('.err').textContent='Not enough stock for '+nm(neg)+'.';return}
+ if(eo&&!await ask('Save changes?',`<b>${ref(eo)}</b> will be updated. Stock, customer balances and reports will be recalculated.<div class="sumbox"><div><span>Total</span><span>${peso(ot(eo))} → <b>${peso(tot)}</b></span></div><div><span>Paid at order</span><span>${peso(eo.paid)} → <b>${peso(amt)}</b></span></div><div><span>Customer</span><span>${esc(eo.cust)} → <b>${esc(custRaw)}</b></span></div></div>`,'Save changes'))return;
+ const ok=await commit(()=>{const cust=canon(db.custs,custRaw);addTo(db.custs,cust);
+  lines.forEach(l=>{addTo(db.fruits,l.fruit);addTo(db.sizes,l.size);db.prices[l.fruit+'|'+l.size]=l.price});
+  const rec={ts,cust,lines,paid:amt,method,mode};
+  if(eo){const i=db.orders.findIndex(o=>o.id===eo.id);db.orders[i]={...db.orders[i],...rec};db.pays.forEach(p=>{if(p.orderId===eo.id)p.cust=cust})}
+  else{rec.id=db.seq++;rec.no=db.seqO++;db.orders.push(rec)}},eo?'Order updated':'Order saved',()=>saveOrder());
+ if(ok){resetOrderForm();render()}}
+function resetOrderForm(){cart=[];curCust='';curMode='';curVia='CASH';curPaid='';touched=false;editId=null;DT0=''}
+function editOrder(id){const o=ordById(id);if(!o)return;cart=o.lines.map(l=>({...l}));curCust=o.cust;curMode=o.mode;curVia=o.mode=='PARTIAL'?o.method:'CASH';curPaid=String(o.paid);editId=id;DT0=toLocalInput(o.ts);
+ touched=!(FULL.includes(o.mode)&&Math.abs(paidOf(o)-ot(o))<0.005);go('orders')}
+function cancelEdit(){resetOrderForm();render()}
+async function delOrder(id){const o=ordById(id);if(!o)return;const n=lateList(o).length;
+ if(!await ask('Delete this order?',`<b>${ref(o)}</b> for <b>${esc(o.cust)}</b> (${peso(ot(o))}) will be deleted${n?', with its '+n+' later payment record'+(n>1?'s':''):''}. Its boxes go back into stock. This cannot be undone.`,'Delete',true))return;
+ if(await commit(()=>{db.orders=db.orders.filter(x=>x.id!==id);db.pays=db.pays.filter(p=>p.orderId!==id)},'Order deleted',()=>delOrder(id))){if(editId===id)resetOrderForm();render()}}
+/* ----- receive stock ----- */
+function receiveView(){
+ const t=today(),its=itemsOf(db),wk=[0,1,2,3,4,5,6].map(ago),rw=db.stockIn.filter(r=>wk.includes(D(r.ts))),er=recEdit?db.stockIn.find(r=>r.id===recEdit):null;
+ const rows=db.stockIn.filter(r=>inF('rec',r.ts)).sort((a,b)=>b.ts-a.ts||b.id-a.id),hasAdj=its.some(x=>x.rem);
+ const dateFld=`<div class="fld"><label>Arrival date</label><input id="rd" type="date" max="${t}" value="${er?D(er.ts):t}"><div class="err"></div></div>`;
+ return head('Receive stock','Add every fruit that arrived, then save the delivery once. For each fruit only the name and boxes are required.')+`
+ <div class="kpi"><div><span>In stock now</span><b>${num(sum(its,x=>Math.max(0,x.left)))} boxes</b></div>
+ <div><span>Received today</span><b>${num(sum(db.stockIn.filter(r=>D(r.ts)==t),r=>r.boxes))} boxes</b></div>
+ <div><span>Received, last 7 days</span><b>${num(sum(rw,r=>r.boxes))} boxes</b></div>
+ <div><span>Stock value at cost</span><b>${peso(sum(its,x=>Math.max(0,x.left)*(avg(x)||0)))}</b></div></div>
+ <div class="c"><h3>In stock now</h3>${its.length?`<div class="sc"><table><tr><th>Fruit</th><th>Size</th><th class="n">Delivered</th><th class="n">Sold</th>${hasAdj?'<th class="n">Adjusted</th>':''}<th class="n">In stock (boxes)</th><th class="n">Kg left</th><th class="n">Avg cost/box</th></tr>${its.map(x=>`<tr><td><b>${esc(x.fruit)}</b></td><td>${esc(x.size)||'-'}</td><td class="n">${num(x.rec)}</td><td class="n">${num(x.sold)}</td>${hasAdj?`<td class="n">${num(x.rem)}</td>`:''}<td class="in">${num(x.left)}</td><td class="n">${x.rk?num(x.rk-x.sk):'-'}</td><td class="n">${avg(x)==null?'-':peso(avg(x))}</td></tr>`).join('')}</table></div>`:'<div class="empty">Nothing in stock yet. Record your first delivery below.</div>'}</div>
+ <div class="c"><h3>${er?'Edit delivery':'Record a delivery'}</h3>${er?`<div class="note">You are editing a delivery from ${DT(er.ts)}.</div>`:''}<div class="form" data-enter="${er?'doReceive':'addRecLine'}">
+ <div class="half fld"><label>Fruit name <span class="req">*</span></label><input class="uc" id="rf" list="dl-f" autocomplete="off" placeholder="Apple" value="${er?esc(er.fruit):''}"><div class="err"></div>${chips('rf',db.fruits.slice().sort())}</div>
+ <div class="fld"><label>Boxes delivered <span class="req">*</span></label><input id="rb" type="number" min="0" step="any" inputmode="decimal" value="${er?er.boxes:''}"><div class="err"></div></div>
+ <div class="half fld"><label>Size</label><input class="uc" id="rs" list="dl-s" autocomplete="off" placeholder="Large" value="${er?esc(er.size):''}"><div class="err"></div>${chips('rs',db.sizes.slice().sort())}</div>
+ <div class="fld"><label>Kg</label><input id="rk" type="number" min="0" step="any" inputmode="decimal" value="${er?er.kg:''}"><div class="err"></div></div>
+ <div class="fld"><label>Cost price per box</label><input id="rc" type="number" min="0" step="any" inputmode="decimal" value="${er?er.cost:''}"><div class="err"></div></div>
+ ${er?dateFld:''}
+ <div class="act">${er?'<button class="o" onclick="cancelRec()">Cancel edit</button><button class="p" onclick="doReceive()">Save changes</button>':'<button class="p" onclick="addRecLine()">Add</button>'}</div></div>${er?'':`<h4>This delivery</h4><div class="cartbox" id="rcartbox">${rcartHTML()}</div><div class="form" style="margin-top:14px">${dateFld}<div class="act"><button class="p" onclick="saveDelivery()">Save delivery</button></div></div>`}${dlist('dl-f',allFruits().sort())}${dlist('dl-s',db.sizes)}</div>
+ <div class="c"><h3>Deliveries by day</h3><p class="sub" style="margin-top:-6px">Newest first. Earlier days are kept; use the date filter to open them.</p>${filt('rec')}${rows.length?byDay(rows,rs=>`<div class="sc"><table><tr><th>Time</th><th>Fruit</th><th>Size</th><th class="n">Boxes</th><th class="n">Kg</th><th class="n">Cost/box</th><th class="n">Total cost</th><th></th></tr>${rs.map(r=>`<tr><td>${TM(r.ts)}</td><td><b>${esc(r.fruit)}</b></td><td>${esc(r.size)||'-'}</td><td class="n hl">${num(r.boxes)}</td><td class="n">${r.kg===''?'-':num(r.kg)}</td><td class="n">${r.cost===''?'-':peso(r.cost)}</td><td class="n">${r.cost===''?'-':peso(r.cost*r.boxes)}</td><td><button class="s" onclick="editRec(${r.id})">Edit</button> <button class="d" onclick="delRec(${r.id})">Delete</button></td></tr>`).join('')}</table></div>`,rs=>`Arrived ${num(sum(rs,r=>r.boxes))} boxes`):`<div class="empty">No deliveries ${F.rec=='all'?'yet':'for '+longD(fd('rec'))}.</div>`}</div>`}
+async function doReceive(){
+ if(committing)return;clearErrs();let first=null;const E=(id,m)=>{bad(id,m);first=first||id};
+ const rawF=$('rf').value,b=$('rb').value,k=$('rk').value,c=$('rc').value,d=$('rd').value;
+ if(!normName(rawF))E('rf','Enter the fruit name.');else if(!validFruit(normName(rawF)))E('rf','Enter a valid fruit name.');
+ if(b===''||!(+b>0))E('rb','Enter boxes above 0.');
+ if(k!==''&&!(+k>=0))E('rk','Kg cannot be negative.');
+ if(c!==''&&!(+c>=0))E('rc','Cost cannot be negative.');
+ if(!d)E('rd','Pick the arrival date.');else if(d>today())E('rd','Date cannot be in the future.');
+ if(first){focusFirst();return}
+ const fruit=await pickFruit(rawF,true);if(fruit===null){$('rf').focus();return}
+ if(fruit===''){bad('rf','Enter a valid fruit name.');focusFirst();return}
+ const size=canon(db.sizes,normName($('rs').value)),er=recEdit?db.stockIn.find(r=>r.id===recEdit):null;
+ const ts=er&&D(er.ts)==d?er.ts:tsOn(d),rec={ts,fruit,size,boxes:+b,kg:k===''?'':+k,cost:c===''?'':+c};
+ if(er){const ok0=er.fruit+'|'+er.size,nk=fruit+'|'+size,trial=trialDb(t=>{const i=t.stockIn.findIndex(r=>r.id===er.id);t.stockIn[i]={...t.stockIn[i],...rec}});
+  if(itemsOf(trial).find(x=>x.left<-1e-9&&(x.fruit+'|'+x.size==ok0||x.fruit+'|'+x.size==nk))){bad('rb','Those boxes are already sold. Boxes cannot go below what was sold.');focusFirst();return}}
+ const ok=await commit(()=>{addTo(db.fruits,fruit);addTo(db.sizes,size);
+  if(er){const i=db.stockIn.findIndex(r=>r.id===er.id);db.stockIn[i]={...db.stockIn[i],...rec}}else db.stockIn.push({id:db.seq++,...rec})},er?'Delivery updated':num(+b)+' boxes of '+fruit+' added to stock',()=>doReceive());
+ if(ok){recEdit=null;render()}}
+function rcartHTML(){return (rcart.length?`<div class="sc"><table><tr><th>Fruit</th><th>Size</th><th class="n">Boxes</th><th class="n">Kg</th><th class="n">Cost/box</th><th class="n">Total cost</th><th></th></tr>${rcart.map((l,i)=>`<tr><td><b>${esc(l.fruit)}</b></td><td>${esc(l.size)||'-'}</td><td class="n hl">${num(l.boxes)}</td><td class="n">${l.kg===''?'-':num(l.kg)}</td><td class="n">${l.cost===''?'-':peso(l.cost)}</td><td class="n">${l.cost===''?'-':peso(l.cost*l.boxes)}</td><td><button class="d" onclick="rmRecLine(${i})">Remove</button></td></tr>`).join('')}</table></div>`:'<div class="empty">No fruits added yet.</div>')+'<div class="err">Add at least one fruit to the delivery.</div>'}
+function refreshRcart(){const b=$('rcartbox');if(!b)return;b.innerHTML=rcartHTML();b.classList.remove('bad')}
+function rmRecLine(i){rcart.splice(i,1);refreshRcart()}
+async function addRecLine(){
+ clearErrs();let first=null;const E=(id,m)=>{bad(id,m);first=first||id};
+ const rawF=$('rf').value,b=$('rb').value,k=$('rk').value,c=$('rc').value;
+ if(!normName(rawF))E('rf','Enter the fruit name.');else if(!validFruit(normName(rawF)))E('rf','Enter a valid fruit name.');
+ if(b===''||!(+b>0))E('rb','Enter boxes above 0.');
+ if(k!==''&&!(+k>=0))E('rk','Kg cannot be negative.');
+ if(c!==''&&!(+c>=0))E('rc','Cost cannot be negative.');
+ if(first){focusFirst();return}
+ const fruit=await pickFruit(rawF,true);if(fruit===null){$('rf').focus();return}
+ if(fruit===''){bad('rf','Enter a valid fruit name.');focusFirst();return}
+ const size=canon(db.sizes,normName($('rs').value));
+ rcart.push({fruit,size,boxes:+b,kg:k===''?'':+k,cost:c===''?'':+c});
+ ['rf','rb','rs','rk','rc'].forEach(id=>$(id).value='');refreshRcart();$('rf').focus()}
+async function saveDelivery(){
+ if(committing)return;clearErrs();let first=null;const E=(id,m)=>{bad(id,m);first=first||id};
+ const d=$('rd').value;
+ if($('rf').value.trim()||$('rb').value!==''||$('rs').value.trim()||$('rk').value!==''||$('rc').value!=='')E('rf','Click Add to include this fruit, or clear it.');
+ if(!rcart.length)$('rcartbox').classList.add('bad');
+ if(!d)E('rd','Pick the arrival date.');else if(d>today())E('rd','Date cannot be in the future.');
+ if(first||!rcart.length){first?focusFirst():$('rcartbox').scrollIntoView({block:'center',behavior:'smooth'});return}
+ const ts=tsOn(d),lines=rcart.map(l=>({...l})),tb=sum(lines,l=>l.boxes);
+ const ok=await commit(()=>{lines.forEach(l=>{addTo(db.fruits,l.fruit);addTo(db.sizes,l.size);db.stockIn.push({id:db.seq++,ts,fruit:l.fruit,size:l.size,boxes:l.boxes,kg:l.kg,cost:l.cost})})},lines.length+' fruit'+(lines.length==1?'':'s')+' ('+num(tb)+' boxes) added to stock',()=>saveDelivery());
+ if(ok){rcart=[];render()}}
+function editRec(id){recEdit=id;render();window.scrollTo(0,0)}
+function cancelRec(){recEdit=null;render()}
+async function delRec(id){const r=db.stockIn.find(x=>x.id===id);if(!r)return;
+ const trial=trialDb(t=>{t.stockIn=t.stockIn.filter(x=>x.id!==id)});
+ if(itemsOf(trial).find(x=>x.left<-1e-9&&x.fruit==r.fruit&&x.size==r.size)){toast('Those boxes are already sold, so this delivery cannot be deleted.');return}
+ if(!await ask('Delete this delivery?',`<b>${num(r.boxes)}</b> boxes of <b>${esc(nm(r))}</b> received ${DT(r.ts)} will be removed from stock.`,'Delete',true))return;
+ if(await commit(()=>{db.stockIn=db.stockIn.filter(x=>x.id!==id)},'Delivery deleted',()=>delRec(id))){if(recEdit===id)recEdit=null;render()}}
+/* ----- customers ----- */
+let CU='all';
+function showUnpaid(){CU='owe';go('cust')}
+function setCU(v){CU=v;render()}
+function customersView(){
+ const owe=CU=='owe',od=o=>balOf(o)>0.005&&daysSince(o.ts)>=db.overdue;
+ const nOwe=custs().filter(c=>cbal(c)>0.005).length;
+ const cs=custs().map(c=>({c,os:db.orders.filter(o=>o.cust===c&&(owe?balOf(o)>0.005:inF('cus',o.ts))).sort((a,b)=>owe?a.ts-b.ts||a.id-b.id:b.ts-a.ts||b.id-a.id)})).filter(x=>x.os.length).sort(owe?(a,b)=>cbal(b.c)-cbal(a.c):(a,b)=>b.os[0].ts-a.os[0].ts);
+ const all=cs.flatMap(x=>x.os);
+ const toggle=`<div class="flt"><button class="${owe?'o':'p'}" onclick="setCU('all')">All customers</button><button class="${owe?'p':'o'}" onclick="setCU('owe')">Unpaid (${nOwe})</button>${owe?`<div class="fld" style="min-width:150px;max-width:190px"><label>Overdue after (days)</label><input type="number" min="1" step="1" value="${db.overdue}" onchange="setOverdue(this.value)"></div>`:''}</div>`;
+ const kpi=owe?`<div class="kpi"><div><span>Total outstanding</span><b class="owe">${peso(sum(cs,x=>cbal(x.c)))}</b></div><div><span>Customers with unpaid</span><b>${cs.length}</b></div><div><span>Unpaid orders</span><b>${all.length}</b></div><div><span>Overdue (${db.overdue}+ days)</span><b class="owe">${peso(sum(all.filter(od),balOf))}</b></div></div>`
+ :`<div class="kpi"><div><span>Customers shown</span><b>${cs.length}</b></div><div><span>Purchases</span><b class="hl">${peso(sum(all,ot))}</b><small>${all.length} order${all.length==1?'':'s'}</small></div><div><span>Paid</span><b class="paidc">${peso(sum(all,paidOf))}</b></div><div><span>Outstanding (all their orders)</span><b class="owe">${peso(sum(cs,x=>cbal(x.c)))}</b></div></div>`;
+ return head('Customers & unpaid','Every purchase with who bought it, when, what, how much was paid and what is still owed. Use "Unpaid" to see only unpaid orders and record payments.')+toggle+(owe?'':filt('cus'))+kpi+
+ (cs.length?cs.map(({c,os})=>{const b=cbal(c),ps=payRows(c).filter(p=>owe||inF('cus',p.ts));
+ return `<details class="c"${owe||F.cus!='all'?' open':''}><summary><b style="font-size:17px">${esc(c)}</b><span class="sub" style="margin:0">${os.length} order${os.length==1?'':'s'}, <b class="hl">${peso(sum(os,ot))}</b> total, <b class="paidc">${peso(sum(os,paidOf))}</b> paid</span>${b>0.005?`<span class="tag out">Owes ${peso(b)} in total</span>`:'<span class="tag">Paid up</span>'}</summary>
+ ${os.map(o=>`<div class="grp"><div class="gh"><b>${ref(o)}</b><span>${DT(o.ts)}</span><span>Total <b class="hl">${peso(ot(o))}</b></span><span>Paid <b class="paidc">${peso(paidOf(o))}</b></span><span>${payLabel(o)}</span><span>Balance <b class="${balOf(o)>0.005?'owe':''}">${peso(balOf(o))}</b></span>${stTag(o)}${od(o)?`<span class="tag out">Overdue ${daysSince(o.ts)} days</span>`:''}${balOf(o)>0.005?`<span class="push"><button class="p" onclick="payModal(${o.id})">Record payment</button></span>`:''}</div>
+ <div class="sc"><table><tr><th>Fruit</th><th>Size</th><th class="n">Boxes</th><th class="n">Kg</th><th class="n">Pcs</th><th class="n">Price</th><th class="n">Amount</th></tr>${o.lines.map(l=>`<tr><td>${esc(l.fruit)}</td><td>${esc(l.size)||'-'}</td><td class="n">${num(l.boxes)}</td><td class="n">${l.kg===''?'-':num(l.kg)}</td><td class="n">${l.pcs===''?'-':num(l.pcs)}</td><td class="n">${peso(l.price)}</td><td class="n">${peso(lt(l))}</td></tr>`).join('')}</table></div></div>`).join('')}
+ <h4>Payment history</h4>${ps.length?`<div class="sc"><table><tr><th>Date and time</th><th>Order</th><th class="n">Amount</th><th>Method</th><th>Type</th></tr>${ps.map(p=>`<tr><td>${DT(p.ts)}</td><td>${ref(p.o)}</td><td class="n paidc">${peso(p.amt)}</td><td>${p.method}</td><td>${p.kind}</td></tr>`).join('')}</table></div>`:'<div class="empty">No payments in this view.</div>'}</details>`}).join(''):`<div class="c empty">${owe?'Nobody owes you.':db.orders.length?'No purchases for this date.':'Customers appear here after you save an order.'}</div>`)}
+async function setOverdue(v){const n=Math.max(1,Math.round(+v||7));if(await commit(()=>{db.overdue=n},'',()=>setOverdue(v)))render()}
+function payModal(id){const o=ordById(id);if(!o)return;const b=balOf(o);
+ modal(`<h3>Record payment</h3><div class="sumbox"><div><span>Customer</span><b>${esc(o.cust)}</b></div><div><span>Order</span><span>${ref(o)}</span></div><div><span>Total</span><span>${peso(ot(o))}</span></div><div><span>Already paid</span><span class="paidc">${peso(paidOf(o))}</span></div><div><span>Balance</span><b class="owe">${peso(b)}</b></div></div>
+ <div class="form" style="grid-template-columns:1fr 1fr">
+ <div class="fld"><label>Amount <span class="req">*</span></label><input id="pa" type="number" min="0" step="any" inputmode="decimal" value="${b}" data-af><div class="err"></div></div>
+ <div class="fld"><label>Payment date <span class="req">*</span></label><input id="pd" type="date" value="${today()}" min="${D(o.ts)}" max="${today()}"><div class="err"></div></div>
+ <div class="fld wide"><label>Paid with</label><select id="pw">${METHODS.map(m=>`<option>${m}</option>`).join('')}</select></div></div>
+ <div class="mf"><button class="o" onclick="closeModal(null)">Cancel</button><button class="p" id="pbtn" onclick="savePay(${id})">Save payment</button></div>`)}
+async function savePay(id){
+ if(payBusy||committing)return;const o=ordById(id);if(!o)return;clearErrs();let first=null;const E=(i,m)=>{bad(i,m);first=first||i};
+ const b=balOf(o),aRaw=$('pa').value,a=r2(aRaw),d=$('pd').value;
+ if(aRaw===''||isNaN(+aRaw)||!(a>0))E('pa','Enter an amount above 0.');else if(a>b+0.005)E('pa','More than the balance of '+peso(b)+'.');
+ if(!d)E('pd','Pick the payment date.');else if(d>today())E('pd','Date cannot be in the future.');else if(d<D(o.ts))E('pd','Date is before the order date.');
+ if(first){$(first).focus();return}
+ payBusy=true;$('pbtn').disabled=true;const method=$('pw').value,ts=Math.max(tsOn(d),o.ts);
+ const ok=await commit(()=>{if(a>balOf(ordById(id))+0.005)throw new Error('Balance changed');db.pays.push({id:db.seq++,ts,orderId:id,cust:o.cust,amt:a,method})},'Payment recorded',()=>savePay(id));
+ payBusy=false;if(ok){closeModal(true);render()}else if($('pbtn'))$('pbtn').disabled=false}
+/* ----- reports ----- */
+function reportsView(){
+ const t=today(),ok=ts=>per=='all'||(per=='today'?D(ts)==t:per=='week'?D(ts)>=ago(6):D(ts).startsWith(t.slice(0,7)));
+ const os=db.orders.filter(o=>ok(o.ts)),cl=coll(ok),cm={};itemsOf(db).forEach(x=>cm[x.fruit+'|'+x.size]=avg(x));
+ const g={};os.flatMap(o=>o.lines).forEach(l=>{const k=l.fruit+'|'+l.size,x=g[k]=g[k]||{fruit:l.fruit,size:l.size,b:0,kg:0,a:0,p:0,known:false};x.b+=l.boxes;x.kg+=+l.kg||0;x.a+=lt(l);if(cm[k]!=null){x.known=true;x.p+=(l.price-cm[k])*l.boxes}});
+ const rows=Object.values(g).sort((a,b)=>b.a-a.a);
+ return head('Reports','Sales, profit and money collected.')+`<div class="form" style="max-width:240px;margin-bottom:14px"><div class="fld"><label>Period</label><select onchange="per=this.value;render()">${[['today','Today'],['week','Last 7 days'],['month','This month'],['all','All time']].map(([v,l])=>`<option value="${v}"${per==v?' selected':''}>${l}</option>`).join('')}</select></div></div>
+ <div class="kpi"><div><span>Sales</span><b class="hl">${peso(sum(os,ot))}</b><small>${os.length} orders, ${num(sum(os.flatMap(o=>o.lines),l=>l.boxes))} boxes</small></div>
+ <div><span>Profit</span><b>${peso(profit(os))}</b><small>Fruits with a cost price only</small></div>
+ <div><span>Collected</span><b class="paidc">${peso(sum(METHODS,m=>cl[m]))}</b><small>Cash ${short(cl.CASH)}, GCash ${short(cl.GCASH)}, Bank ${short(cl.BANK)}</small></div>
+ <div><span>Owed by customers now</span><b class="owe">${peso(sum(custs(),cbal))}</b></div></div>
+ <div class="c"><h3>Sales by fruit</h3>${rows.length?`<div class="sc"><table><tr><th>Fruit</th><th>Size</th><th class="n">Boxes</th><th class="n">Kg</th><th class="n">Sales</th><th class="n">Profit</th></tr>${rows.map(x=>`<tr><td>${esc(x.fruit)}</td><td>${esc(x.size)||'-'}</td><td class="n">${num(x.b)}</td><td class="n">${x.kg?num(x.kg):'-'}</td><td class="n hl">${peso(x.a)}</td><td class="n">${x.known?peso(x.p):'-'}</td></tr>`).join('')}</table></div>`:'<div class="empty">No sales in this period.</div>'}</div>`}
+/* ---------- backup, restore, export ---------- */
+function dl(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+const stamp=()=>{const n=new Date(),p=x=>String(x).padStart(2,'0');return n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate())+'_'+p(n.getHours())+p(n.getMinutes())+p(n.getSeconds())};
+const counts=d=>`${d.orders.length} orders, ${d.stockIn.length} deliveries, ${d.pays.length} later payments, ${new Set(d.orders.map(o=>o.cust)).size} customers`;
+function backup(){try{
+ const payload={app:'AZY_FRUITS_POS',version:4,createdAt:new Date().toISOString(),summary:counts(db),data:db,
+  customers:custs().map(c=>({name:c,orders:db.orders.filter(o=>o.cust===c).map(ref),outstanding:cbal(c)})),inventory:itemsOf(db).map(x=>({fruit:x.fruit,size:x.size,inStock:x.left}))};
+ const name='FRUIT_POS_BACKUP_'+stamp()+'.json';dl(name,JSON.stringify(payload),'application/json');
+ try{localStorage.setItem('azy.lastbackup',today())}catch(e){}toast('Backup file created: '+name);if(view=='dash')render();return true}
+ catch(e){toast('Backup failed. '+(e.message||''),()=>backup());return false}}
+function csvOrders(){const h=['Ref','Date','Time','Customer','Fruit','Size','Boxes','Kg','Pieces','Price','Amount','Order total','Order paid','Balance','Status','Payment type'];
+ dl('azy-orders-'+stamp()+'.csv',[h.join(','),...db.orders.flatMap(o=>o.lines.map(l=>[q(ref(o)),D(o.ts),q(TM(o.ts)),q(o.cust),q(l.fruit),q(l.size),l.boxes,l.kg,l.pcs,l.price,lt(l),ot(o),paidOf(o),balOf(o),q(stOf(o)),q(payLabel(o))].join(',')))].join('\n'),'text/csv')}
+$('rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+ let inc,meta='';
+ try{const j=JSON.parse(await f.text()),raw=j&&j.data&&Array.isArray(j.data.orders)?j.data:j;if(!raw||!Array.isArray(raw.orders)||!Array.isArray(raw.stockIn))throw 0;inc=normalize(raw);meta=j.createdAt?DT(j.createdAt):''}
+ catch(x){toast('That file is not a valid backup.');return}
+ if(new Set(inc.orders.map(o=>o.id)).size!=inc.orders.length){toast('Backup has duplicate order IDs. Not restored.');return}
+ const v=await modal(`<h3>Restore backup?</h3><p><b>This replaces all current data.</b> Orders, deliveries and payments that are not in the backup file will be lost.</p><div class="sumbox"><div><span>Now</span><span>${counts(db)}</span></div><div><span>Backup${meta?' ('+meta+')':''}</span><b>${counts(inc)}</b></div></div><label class="cvg"><input type="checkbox" id="rsafe" checked> Download a copy of the current data first</label><div class="mf"><button class="o" onclick="closeModal(null)">Cancel</button><button class="d2" onclick="closeModal($('rsafe').checked?'safe':'go')">Restore</button></div>`);
+ if(!v)return;if(v=='safe'&&!backup())return;
+ if(await commit(()=>{db=inc},'Backup restored',()=>$('rfile').click())){resetOrderForm();rcart=[];recEdit=null;render()}};
+/* ---------- start ---------- */
+(async function(){applyTheme(document.documentElement.dataset.theme=='dark'?'dark':'light');$('app').innerHTML='<div class="empty">Loading…</div>';
+ await init();if(!CLOUD)render();let lastDay=today();setInterval(()=>{if(today()!=lastDay){lastDay=today();if(!mres&&(!CLOUD||sess))render()}},30000)})();
+</script></body></html>
